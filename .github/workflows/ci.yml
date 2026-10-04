@@ -1,0 +1,27 @@
+# Integración continua: ejecuta los tests en cada push a main y en cada Pull Request
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Descarga el código del repositorio en el runner
+      - uses: actions/checkout@v7
+
+      # Instala Python (misma versión que en local) y cachea las dependencias de pip
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar tests
+        run: pytest
